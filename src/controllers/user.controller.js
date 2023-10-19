@@ -1,4 +1,36 @@
+import mongoose from "mongoose";
+import { User } from "../model/user.js";
 
+export const getUser = async(req,res) => {
+    try {
+        const { uid, name, email } = req.query;
+
+        if (!uid && !name && !email) {
+            return res.status(400).json({ error: 'Debes proporcionar al menos un parámetro de búsqueda (uid, name o email).' });
+        }
+
+        let query = {};
+        if (uid) {
+            if (!mongoose.Types.ObjectId.isValid(uid)) {
+                return res.status(400).json({ error: 'El formato del ID no es válido.' });
+            }
+            query._id = uid;
+        }
+
+        if (name) query.name = name;
+        if (email) query.email = email;
+        
+        const user = await User.findOne(query).lean();
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        res.json( user );
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+}
 
 
 
