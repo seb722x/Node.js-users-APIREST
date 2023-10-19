@@ -45,3 +45,17 @@ export const login = async(req,res)=>{
         return res.status(500).json({error:" Server error"});
     }
 };
+
+export const userInfo = async(req,res) => {
+    try {
+        const user = await User.findById(req.uid).lean();
+        res.json({user});
+    } catch (error) {
+        return res.status(400).json({error: error.message});
+    }
+}
+
+export  const logout = ( req,res)=> {
+    res.clearCookie('refreshToken');
+    res.json({ok:true})
+}
