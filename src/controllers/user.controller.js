@@ -59,6 +59,40 @@ export const updateUser = async (req, res) => {
 };
 
 
+export const deleteUser = async (req, res) => {
+    try {
+        const { uid } = req.query; 
+
+        if (!mongoose.Types.ObjectId.isValid(uid)) {
+            return res.status(400).json({ error: 'El formato del ID no es válido.' });
+        }
+
+        const deletedUser = await User.findByIdAndRemove(uid).lean();
+
+        if (!deletedUser) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        res.json(deletedUser);
+    } catch (error) {
+        console.error('Error al eliminar el usuario:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().lean();
+
+        res.json(users);
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+
 
 
 
