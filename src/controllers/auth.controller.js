@@ -1,5 +1,16 @@
 import { User } from "../model/user.js";
 import {  generateToken } from "../utils/generateTokens.js";
+import bcryptjs from 'bcryptjs';
+
+
+const hashPassword = async (password) => {
+    const salt = await bcryptjs.genSalt(10);
+    return bcryptjs.hash(password, salt);
+};
+
+const comparePassword = async (candidatePassword, hashedPassword) => {
+    return bcryptjs.compare(candidatePassword, hashedPassword);
+};
 
 
 export const register = async(req,res)=>{
@@ -8,9 +19,10 @@ export const register = async(req,res)=>{
         let user = await User.findOne({email})
         if(user) throw ({code:11000})  // make a jump  to catch
 
-        user = new User({email, password, name, roles});
+        const hashedPassword = await hashPassword(password);
+        user = new User({ email, password: hashedPassword, name, roles });
         await user.save();
-        //console.log(user.id);
+
         const {token,expiresIn}= generateToken(user.id)
         return res.status(200).json({token})
         
@@ -32,9 +44,9 @@ export const login = async(req,res)=>{
         if(!user) 
             return res.status(403).json({error: "user does not exist"})
 
-            const respPassword = await user.comparePassword(password);
-            if(!respPassword)
-                return res.status(403).json({error: "Wrong password"});
+        const respPassword = await comparePassword(password, user.password);
+        if(!respPassword)
+            return res.status(403).json({error: "Wrong password"});
 
         const {token,expiresIn}= generateToken(user.id,res);
        
