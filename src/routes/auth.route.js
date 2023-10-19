@@ -22,10 +22,32 @@ router.post('/login',
     login
 );
 
-router.get('/get-all-users', getAllUsers)
-router.get('/find-user',getUserDto, validationResultMiddle,getUser);
-router.patch('/update-user',updateUserDto, validationResultMiddle,updateUser)
-router.delete('/delete-user', deleteUserDto,validationResultMiddle,deleteUser)
+router.get('/get-all-users', 
+    requireToken, 
+    requireRole(["admin"]), 
+    getAllUsers
+    )
+router.get('/find-user',
+    requireToken, 
+    requireRole(["admin"]),
+    getUserDto, 
+    validationResultMiddle,
+    getUser
+    );
+router.patch('/update-user',
+    requireToken, 
+    requireRole(["admin"]), 
+    updateUserDto, 
+    validationResultMiddle,
+    updateUser
+    )
+router.delete('/delete-user', 
+    requireToken, 
+    requireRole(["admin"]),
+    deleteUserDto,
+    validationResultMiddle,
+    deleteUser
+    )
 
 router.get('/testroles',requireToken, requireRole(["admin"]),getAllUsers)
 
