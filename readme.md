@@ -39,7 +39,7 @@ Table of Contents
             You can set your own customized environment variables. For testing purposes, a main .env file is included in this repository.
         
     1.4 Start the application:
-            npm start dev
+            npm run dev
     1.5 Access the application by opening your web browser and visiting 
             http://localhost:5000.
     1.6 Use postman collection to try the API, this is in the files or in the next link:
