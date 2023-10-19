@@ -15,7 +15,7 @@ export  const requireRole = (allowedRoles) => {
             next();
         } catch (error) {
             console.error(error);
-            return res.status(403).json({ error: 'Forbidden' });
+            return res.status(403).json({ error: 'Forbidden, there is a problem with your roles' });
         }
     };
 };

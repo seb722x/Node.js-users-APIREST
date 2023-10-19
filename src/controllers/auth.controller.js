@@ -3,14 +3,6 @@ import {  generateToken } from "../utils/generateTokens.js";
 import bcryptjs from 'bcryptjs';
 
 
-const hashPassword = async (password) => {
-    const salt = await bcryptjs.genSalt(10);
-    return bcryptjs.hash(password, salt);
-};
-
-const comparePassword = async (candidatePassword, hashedPassword) => {
-    return bcryptjs.compare(candidatePassword, hashedPassword);
-};
 
 
 export const register = async(req,res)=>{
@@ -23,7 +15,7 @@ export const register = async(req,res)=>{
         user = new User({ email, password: hashedPassword, name, roles });
         await user.save();
 
-        const {token,expiresIn}= generateToken(user.id)
+        const {token,expiresIn}= generateToken(user.id,res)
         return res.status(200).json({token})
         
     } catch (error) {
@@ -31,7 +23,6 @@ export const register = async(req,res)=>{
         if(error.code === 11000){
             return res.status(400).json({ error: "this user already exists"})
         } 
-        
         return res.status(500).json({error:" Server error"});
     }
 };
@@ -40,9 +31,7 @@ export const login = async(req,res)=>{
     const {email,password} = req.body;
 
     try {
-        let user = await User.findOne({email});
-        if(!user) 
-            return res.status(403).json({error: "user does not exist"})
+        let user = await findUser(email);
 
         const respPassword = await comparePassword(password, user.password);
         if(!respPassword)
@@ -57,6 +46,22 @@ export const login = async(req,res)=>{
         return res.status(500).json({error:" Server error"});
     }
 };
+
+export const hashPassword = async (password) => {
+    const salt = await bcryptjs.genSalt(10);
+    return bcryptjs.hash(password, salt);
+};
+
+const comparePassword = async (candidatePassword, hashedPassword) => {
+    return bcryptjs.compare(candidatePassword, hashedPassword);
+};
+
+const findUser=async (email)=> {
+    let user = await User.findOne({email});
+    if(!user) 
+            return res.status(403).json({error: "user does not exist"});
+    return user;
+}
 
 export const userInfo = async(req,res) => {
     try {

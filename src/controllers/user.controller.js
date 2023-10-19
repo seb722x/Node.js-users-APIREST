@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 import { User } from "../model/user.js";
+import { hashPassword } from "./auth.controller.js";
 
 export const getUser = async(req,res) => {
     try {
         const { uid, name, email } = req.query;
 
         if (!uid && !name && !email) {
-            return res.status(400).json({ error: 'Debes proporcionar al menos un parámetro de búsqueda (uid, name o email).' });
+            return res.status(400).json({ error: 'You should input one of this: (uid, name or email).' });
         }
 
         let query = {};
+
         if (uid) {
-            if (!mongoose.Types.ObjectId.isValid(uid)) {
-                return res.status(400).json({ error: 'El formato del ID no es válido.' });
-            }
+            checkUid(uid);
             query._id = uid;
         }
 
@@ -23,7 +23,7 @@ export const getUser = async(req,res) => {
         const user = await User.findOne(query).lean();
 
         if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado.' });
+            return res.status(404).json({ error: 'User not found.' });
         }
 
         res.json( user );
@@ -36,25 +36,29 @@ export const updateUser = async (req, res) => {
     try {
         const { uid } = req.query; 
 
-        if (!mongoose.Types.ObjectId.isValid(uid)) {
-            return res.status(400).json({ error: 'El formato del ID no es válido.' });
-        }
-        const { name, email, otherField } = req.body;
+        checkUid(uid);
+
+        const { name, email, roles, password } = req.body;
 
         const updateFields = {};
         if (name) updateFields.name = name;
         if (email) updateFields.email = email;
+        if(password) {
+            const hashedPassword = await hashPassword(password);
+            updateFields.password = hashedPassword;
+        }
+        if(roles) updateFields.roles = roles;
 
         const updatedUser = await User.findByIdAndUpdate(uid, updateFields, { new: true }).lean();
 
         if (!updatedUser) {
-            return res.status(404).json({ error: 'Usuario no encontrado.' });
+            return res.status(404).json({ error: 'User not found' });
         }
 
         res.json(updatedUser);
     } catch (error) {
-        console.error('Error al actualizar el usuario:', error);
-        return res.status(500).json({ error: 'Error interno del servidor.' });
+        console.error('Error updating the user:', error);
+        return res.status(500).json({ error: 'Server error' });
     }
 };
 
@@ -63,20 +67,18 @@ export const deleteUser = async (req, res) => {
     try {
         const { uid } = req.query; 
 
-        if (!mongoose.Types.ObjectId.isValid(uid)) {
-            return res.status(400).json({ error: 'El formato del ID no es válido.' });
-        }
+        checkUid(uid);
 
         const deletedUser = await User.findByIdAndRemove(uid).lean();
 
         if (!deletedUser) {
-            return res.status(404).json({ error: 'Usuario no encontrado.' });
+            return res.status(404).json({ error: 'User not found' });
         }
 
         res.json(deletedUser);
     } catch (error) {
-        console.error('Error al eliminar el usuario:', error);
-        return res.status(500).json({ error: 'Error interno del servidor.' });
+        console.error('Error when deleting the user', error);
+        return res.status(500).json({ error: 'Internal server errors.' });
     }
 };
 
@@ -87,11 +89,16 @@ export const getAllUsers = async (req, res) => {
 
         res.json(users);
     } catch (error) {
-        console.error('Error al obtener usuarios:', error);
-        return res.status(500).json({ error: 'Error interno del servidor.' });
+        console.error('Error retriveing the users:', error);
+        return res.status(500).json({ error: 'Internal server errors.' });
     }
 };
 
+const checkUid=(uid)=>{
+    if (!mongoose.Types.ObjectId.isValid(uid)) {
+        return res.status(400).json({ error: 'The Id is not valid.' });
+    }
+}
 
 
 
