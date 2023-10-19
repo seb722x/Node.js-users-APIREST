@@ -32,6 +32,33 @@ export const getUser = async(req,res) => {
     }
 }
 
+export const updateUser = async (req, res) => {
+    try {
+        const { uid } = req.query; 
+
+        if (!mongoose.Types.ObjectId.isValid(uid)) {
+            return res.status(400).json({ error: 'El formato del ID no es válido.' });
+        }
+        const { name, email, otherField } = req.body;
+
+        const updateFields = {};
+        if (name) updateFields.name = name;
+        if (email) updateFields.email = email;
+
+        const updatedUser = await User.findByIdAndUpdate(uid, updateFields, { new: true }).lean();
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        return res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+
 
 
 
