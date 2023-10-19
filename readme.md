@@ -42,6 +42,8 @@ Table of Contents
             npm start dev
     1.5 Access the application by opening your web browser and visiting 
             http://localhost:5000.
+    1.6 Use postman collection to try the API, this is in the files or in the next link:
+            https://interstellar-crescent-253112.postman.co/workspace/dfsdf~ab9a2158-73df-4e5c-ad1b-833cc6d3ba62/collection/24745741-8c3784ff-15ad-4190-99dd-5c19608a8d42?action=share&creator=24745741
 
 
 2. Routes

@@ -1,0 +1,318 @@
+{
+	"info": {
+		"_postman_id": "8c3784ff-15ad-4190-99dd-5c19608a8d42",
+		"name": "API-Nodejs-vass",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24745741",
+		"_collection_link": "https://interstellar-crescent-253112.postman.co/workspace/dfsdf~ab9a2158-73df-4e5c-ad1b-833cc6d3ba62/collection/24745741-8c3784ff-15ad-4190-99dd-5c19608a8d42?action=share&source=collection_link&creator=24745741"
+	},
+	"item": [
+		{
+			"name": "1. register user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJlY2ZiZmZhY2RiMTgxZTBkM2M3NjciLCJpYXQiOjE2OTc1NjY2NTYsImV4cCI6MTY5NzU2NzU1Nn0.jQhzl_PwubXYzntJh8vlwEIo-W81_2qoVHJ-b5mHbjQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"userToDelete3@gmail.com.com\",\r\n    \"password\":\"123456alfa\",\r\n    \"repassword\":\"123456alfa\",\r\n    \"name\": \"pedro\",\r\n    \"roles\": [\"admin\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"testUser4@gmail.com\",\r\n    \"password\":\"123456alfa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. get-all-users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/get-all-users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"get-all-users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.getUserByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/find-user?uid=6531582f43b81465c67c670a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"find-user"
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "6531582f43b81465c67c670a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.getUSerByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/find-user?name=pablo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"find-user"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "pablo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6.getUserByemail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/find-user?email=testuser4@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"find-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "testuser4@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6. update user",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"testChanged@gmail.com.com\",\r\n    \"password\":\"245678910\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/update-user?uid=6531590743b81465c67c6723",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"update-user"
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "6531590743b81465c67c6723"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7. Delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/delete-user?uid=65315ada38259f629791583d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"delete-user"
+					],
+					"query": [
+						{
+							"key": "uid",
+							"value": "65315ada38259f629791583d"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testRoles",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/testroles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"testroles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "protected route",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJlZTA3NTlhYTBmNzQ4MWRiNGYyZWYiLCJpYXQiOjE2OTc2NDY2NzksImV4cCI6MTY5NzY0NzU3OX0.kgDGClcMOcV83_DpUTi9JQFkw43vj3QSZ55GaLSOKOw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/auth/protected",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"protected"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

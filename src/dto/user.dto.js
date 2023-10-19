@@ -26,9 +26,11 @@ export const updateUserDto = [
       .isEmail()
       .normalizeEmail(),
     body('password', 'Incorrect password')
+      .optional()
       .trim()
       .isLength({ min: 6 }),
     body('roles', 'Incorrect roles')
+      .optional()
       .isArray(),
   ];
   

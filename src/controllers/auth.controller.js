@@ -16,7 +16,7 @@ export const register = async(req,res)=>{
         await user.save();
 
         const {token,expiresIn}= generateToken(user.id,res)
-        return res.status(200).json({token})
+        return res.status(200).json({user,token,expiresIn})
         
     } catch (error) {
         console.log(error.code)
@@ -39,7 +39,7 @@ export const login = async(req,res)=>{
 
         const {token,expiresIn}= generateToken(user.id,res);
        
-        return res.json({email,token,expiresIn});
+        return res.json({email,user,token, expiresIn});
         
     } catch (error) {
         console.log(error);
